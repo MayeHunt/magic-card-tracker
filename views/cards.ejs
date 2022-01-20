@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cards</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/stylesheet.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script>
+        const current = [];
+        function passId(id) {
+
+            console.log(id);
+            //yeah i know
+            let tester = id.split('Name:');
+            tester[1] = tester[1].split('Type:');
+            let idStore = tester[0];
+            tester[0] = tester[1][0];
+            tester[1] = tester[1][1];
+            tester[1] = tester[1].split('Level:');
+            tester[2] = tester[1][1];
+            tester[1] = tester[1][0];
+            tester[2] = tester[2].split('Race:');
+            tester[3] = tester[2][1];
+            tester[2] = tester[2][0];
+            tester[3] = tester[3].split('Attribute:');
+            tester[4] = tester[3][1];
+            tester[3] = tester[3][0];
+            tester[4] = tester[4].split('ATK:');
+            tester[5] = tester[4][1];
+            tester[4] = tester[4][0];
+            tester[5] = tester[5].split('DEF:');
+            tester[6] = tester[5][1];
+            tester[5] = tester[5][0];
+            tester[6] = tester[6].split('Collected:');
+            tester[7] = tester[6][1];
+            tester[6] = tester[6][0];
+
+            for (let i = 0; i < tester.length - 1; i++){
+                tester[i] = tester[i].replace(/[^a-zA-Z :.0-9,'\-]/g, "").substring(0, tester[i].length - 4).trimRight().trimLeft();
+                if (i == 0 || i == 1 || i == 3 || i == 4){
+                    tester[i] = tester[i].substring(0, tester[i].length - 1);
+                    tester[i] = tester[i].substring(1);
+                }
+            };
+            if (tester[7] = tester[7].substring(0, tester[7].length - 2).trimLeft() == 'true') {
+                tester[7] = 1;
+            } else {
+                tester[7] = 0;
+            };
+            
+            idStore = idStore.substring(23);
+            idStore = idStore.substring(0, idStore.length - 6);
+           
+            console.log(idStore);
+
+            document.getElementById("editName").value = tester[0];
+            document.getElementById("editType").value = tester[1];
+            document.getElementById("editLevel").value = tester[2];
+            document.getElementById("editRace").value = tester[3];
+            document.getElementById("editAttribute").value = tester[4];
+            document.getElementById("editATK").value = tester[5];
+            document.getElementById("editDEF").value = tester[6];
+            document.getElementById("editCollected").value = tester[7];
+            document.getElementById("update-form").action = "/update/"+idStore;
+
+        
+        };
+    </script>
+    <style>
+        .row {
+            margin-right: 0px;
+            margin-left: 0px;
+        }
+        #flex-breakA {
+            flex-basis: 75%;
+            max-width: 75%;
+        }
+        #flex-breakB {
+            flex-basis: 25%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row" id="bootstrap-overrides">
+                        <div class="col-sm-6" id="flex-breakA">
+                            <h2><b>Card Collection Database</b></h2>
+                        </div>
+                        <div class="col-sm-6" id="flex-breakB">
+                            
+                            <form method="GET" action="/create-card">
+                                <a href="#addCardModal" class="btn btn-success" data-toggle="modal">
+                                    <i class="material-icons">&#xE147;</i>
+                                    <span>Add New Card</span>
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Level</th>
+                            <th>Race</th>
+                            <th>Attribute</th>
+                            <th>ATK</th>
+                            <th>DEF</th>
+                            <th>Collected</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% cards.forEach(function(card){ %>
+                        <tr>
+                            <td><%=  card.Name  %></td>
+                            <td><%=  card.Type  %></td>
+                            <td><%=  card.Level  %></td>
+                            <td><%=  card.Race  %></td>
+                            <td><%=  card.Attribute  %></td>
+                            <td><%=  card.ATK  %></td>
+                            <td><%=  card.DEF  %></td>
+                            <td><%=  card.Collected  %></td>
+                            <td>
+                                <a href="#editCardModal" id="<%=card%>" class='edit' data-toggle="modal" onclick='passId(this.id)'><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a> 
+                            </td>
+                            <td>
+                                <a href="/cards/delete/<%=card._id%>" class="delete"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            </td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+                <div class="clearfix">
+                    <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+                    <ul class="pagination">
+                        <li class="page-item disabled"><a href="#">Previous</a></li>
+                        <li class="page-item"><a href="#" class="page-link">1</a></li>
+                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                        <li class="page-item active"><a href="#" class="page-link">3</a></li>
+                        <li class="page-item"><a href="#" class="page-link">4</a></li>
+                        <li class="page-item"><a href="#" class="page-link">5</a></li>
+                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--ADD MODAL-->
+    <div id="addCardModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" action="/create-card">
+                    <div class="modal-header">						
+                        <h4 class="modal-title">Add Card</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">					
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" id="Name" name="Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Type</label>
+                            <input type="text" class="form-control" id="Type" name="Type" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Level</label>
+                            <input type="number" class="form-control" id="Level" name="Level">
+                        </div>
+                        <div class="form-group">
+                            <label>Race</label>
+                            <input type="text" class="form-control" id="Race" name="Race" required>
+                        </div>	
+                        <div class="form-group">
+                            <label>Attribute</label>
+                            <input type="text" class="form-control" id="Attribute" name="Attribute">
+                        </div>
+                        <div class="form-group">
+                            <label>ATK</label>
+                            <input type="number" class="form-control" id="ATK" name="ATK">
+                        </div>
+                        <div class="form-group">
+                            <label>DEF</label>
+                            <input type="number" class="form-control" id="DEF" name="DEF">
+                        </div>
+                        <div class="form-group">
+                            <label>Collected</label>
+                            <select class="form-control" id="Collected" name="Collected">
+                                <option value="1">True</option>
+                                <option value="0">False</option>
+                            </select>
+                        </div>				
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                        <input type="submit" class="btn btn-success" value="Add">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <!--EDIT MODAL-->
+    <div id="editCardModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="update-form" method="POST" action="/update">
+                    <div class="modal-header">						
+                        <h4 class="modal-title">Edit Card</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">					
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" id="editName" name="Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Type</label>
+                            <input type="text" class="form-control" id="editType" name="Type" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Level</label>
+                            <input type="number" class="form-control" id="editLevel" name="Level">
+                        </div>
+                        <div class="form-group">
+                            <label>Race</label>
+                            <input type="text" class="form-control" id="editRace" name="Race" required>
+                        </div>	
+                        <div class="form-group">
+                            <label>Attribute</label>
+                            <input type="text" class="form-control" id="editAttribute" name="Attribute">
+                        </div>
+                        <div class="form-group">
+                            <label>ATK</label>
+                            <input type="number" class="form-control" id="editATK" name="ATK">
+                        </div>
+                        <div class="form-group">
+                            <label>DEF</label>
+                            <input type="number" class="form-control" id="editDEF" name="DEF">
+                        </div>
+                        <div class="form-group">
+                            <label>Collected</label>
+                            <select class="form-control" id="editCollected" name="Collected">
+                                <option value="1">True</option>
+                                <option value="0">False</option>
+                            </select>
+                        </div>				
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                        <input type="submit" class="btn btn-success" value="Add">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

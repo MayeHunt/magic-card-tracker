@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cards</title>
+</head>
+<body>
+
+    <form method="GET" action="/create-card">
+        <input
+        type="submit"
+        value="Add Card"
+        />
+    </form>
+
+    <table class="table table-striped custab">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Level</th>
+                <th>Race</th>
+                <th>Attribute</th>
+                <th>ATK</th>
+                <th>DEF</th>
+                <th>Collected</th>
+            </tr>
+            <% cards.forEach(function(card){ %>
+            <tr>
+                
+                    
+                        <td><%=  card.Name  %></td>
+                        <td><%=  card.Type  %></td>
+                        <td><%=  card.Level  %></td>
+                        <td><%=  card.Race  %></td>
+                        <td><%=  card.Attribute  %></td>
+                        <td><%=  card.ATK  %></td>
+                        <td><%=  card.DEF  %></td>
+                        <td><%=  card.Collected  %></td>
+                        <td class="text-center"><a class='btn btn-info btn-xs' href="/cards/update/<%=card._id%>"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="/cards/delete/<%=card._id%>" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
+            </tr>
+            <% }); %>
+        </thead>
+            
+            
+              
+    </table>
+
+    
+
+
+
+</body>
+</html>
