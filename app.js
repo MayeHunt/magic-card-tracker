@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const express = require("express");
 const path = require("path");
 const app = express();
-const { WEB_PORT, MONGODB_URI } = process.env;
+const { PORT, MONGODB_URI } = process.env;
 const cardController = require("./controllers/card");
 const bodyParser = require('body-parser');
 
@@ -37,7 +37,7 @@ app.post("/update/:id", cardController.update);
 
 
 
-app.listen(WEB_PORT, () => {
-    console.log(`App listening at http://localhost:${WEB_PORT}/cards`);
+app.listen(PORT, () => {
+    console.log(`App listening at http://localhost:${PORT}/cards`);
   });
     
