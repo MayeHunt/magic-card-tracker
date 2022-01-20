@@ -26,12 +26,7 @@ app.get("/cards", cardController.list);
 
 app.get("/cards/delete/:id", cardController.delete);
 
-app.get("/create-card", (req, res) => {
-    res.render("create-card", {errors: {}});
-});
 app.post("/create-card", cardController.create);
-
-app.get("/cards/update/:id", cardController.edit);
 
 app.post("/update/:id", cardController.update);
 
