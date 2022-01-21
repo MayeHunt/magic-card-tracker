@@ -12,6 +12,8 @@ A web-app to track yugioh cards and their collected status by various categories
 - "mongodb": "^4.3.0"
 - "mongoose": "^6.1.6"
 
+# This web app uses MongoDB's Atlas cloud service, to run it in development you will need to make an account and create a database.
+
 ## Also required is a .env file containing the following
 
 - BASE_URI=`http://localhost`
