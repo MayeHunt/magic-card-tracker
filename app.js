@@ -22,7 +22,7 @@ mongoose.connection.on("error", (err) => {
 
 
 
-app.get("/cards", cardController.list);
+app.get("/cards", cardController.list);    
 
 app.get("/cards/delete/:id", cardController.delete);
 
